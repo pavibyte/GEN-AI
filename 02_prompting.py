@@ -9,7 +9,7 @@ prompt = """
 Classify the following sentence as positive or negative.
 
 Sentence:
-"I really enjoyed this movie."
+"The product broke after two days and I am very disappointed."
 
 """
 response = client.models.generate_content(
