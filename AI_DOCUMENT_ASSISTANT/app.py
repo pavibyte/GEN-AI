@@ -6,7 +6,7 @@ document = load_document("data/company_policy.txt")
 
 chunks = chunk_text(
     document,
-    chunk_size=200,
+    chunk_size=300,
     overlap=50
 )
 

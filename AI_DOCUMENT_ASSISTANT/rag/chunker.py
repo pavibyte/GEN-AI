@@ -1,6 +1,6 @@
 def chunk_text(
     text: str,
-    chunk_size: int = 200,
+    chunk_size: int = 300,
     overlap: int = 50
 ) -> list[str]:
 
@@ -9,18 +9,55 @@ def chunk_text(
             "Overlap must be smaller than chunk size."
         )
 
+    separators = ["\n\n", "\n", ". ", " "]
+
     chunks = []
 
-    start = 0
+    def split_text(text_part: str, separator_index: int):
 
-    while start < len(text):
+        if len(text_part) <= chunk_size:
+            chunks.append(text_part.strip())
+            return
 
-        end = start + chunk_size
+        if separator_index >= len(separators):
+            for start in range(
+                0,
+                len(text_part),
+                chunk_size - overlap
+            ):
+                chunk = text_part[start:start + chunk_size]
+                chunks.append(chunk.strip())
+            return
 
-        chunk = text[start:end]
+        separator = separators[separator_index]
 
-        chunks.append(chunk)
+        parts = text_part.split(separator)
 
-        start += chunk_size - overlap
+        current_chunk = ""
 
-    return chunks
+        for part in parts:
+
+            candidate = (
+                current_chunk + separator + part
+                if current_chunk
+                else part
+            )
+
+            if len(candidate) <= chunk_size:
+                current_chunk = candidate
+            else:
+
+                if current_chunk:
+                    chunks.append(current_chunk.strip())
+
+                current_chunk = part
+
+        if current_chunk:
+            split_text(
+                current_chunk,
+                separator_index + 1
+            )
+
+    split_text(text, 0)
+
+    return [chunk for chunk in chunks if chunk]
