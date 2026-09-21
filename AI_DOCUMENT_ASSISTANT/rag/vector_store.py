@@ -30,7 +30,7 @@ class VectorStore:
             for _ in chunks
         ]
 
-        self.collection.add(
+        self.collection.upsert(
             ids=ids,
             documents=chunks,
             embeddings=embeddings,
