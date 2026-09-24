@@ -14,11 +14,7 @@ document = load_document(
     "data/company_policy.txt"
 )
 
-chunks = chunk_text(
-    document,
-    chunk_size=300,
-    overlap=50
-)
+chunks = chunk_text(document)
 
 embeddings = get_embeddings(chunks)
 
@@ -34,7 +30,7 @@ vector_store.add_documents(
 # 2. RETRIEVAL
 # -------------------------
 
-question = "How many vacation days do employees get?"
+question = "What is the company's maternity leave policy?"
 
 retriever = Retriever()
 
@@ -42,17 +38,25 @@ results = retriever.retrieve(
     question,
     n_results=3
 )
-
+print("\nQuestion:")
+print(question)
 retrieved_documents = results["documents"][0]
+print("\nRetrieval Results:")
+
+for i, document in enumerate(results["documents"][0]):
+    distance = results["distances"][0][i]
+
+    print(f"\nResult {i + 1}")
+    print(f"Distance: {distance}")
+    print(f"Document: {document}")
 
 
+"""
 # -------------------------
 # 3. GENERATION
 # -------------------------
 
-context = "\n\n".join(
-    retrieved_documents
-)
+context = "\n\n".join(retrieved_documents)
 
 answer = generate_answer(
     question,
@@ -72,3 +76,4 @@ print(context)
 
 print("\nFinal Answer:")
 print(answer)
+"""
