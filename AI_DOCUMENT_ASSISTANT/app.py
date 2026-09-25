@@ -30,25 +30,35 @@ vector_store.add_documents(
 # 2. RETRIEVAL
 # -------------------------
 
-question = "What is the company's maternity leave policy?"
+question = "Can employees work remotely?"
 
 retriever = Retriever()
 
-results = retriever.retrieve(
+retrieved_documents = retriever.retrieve(
     question,
-    n_results=3
+    n_results=3,
+    distance_threshold=0.60
 )
+
 print("\nQuestion:")
 print(question)
-retrieved_documents = results["documents"][0]
-print("\nRetrieval Results:")
 
-for i, document in enumerate(results["documents"][0]):
-    distance = results["distances"][0][i]
+if not retrieved_documents:
+    answer = "I don't have enough information to answer that."
 
-    print(f"\nResult {i + 1}")
-    print(f"Distance: {distance}")
-    print(f"Document: {document}")
+else:
+    context = "\n\n".join(
+    result["document"]
+    for result in retrieved_documents
+)
+
+    answer = generate_answer(
+        question,
+        context
+    )
+
+print("\nFinal Answer:")
+print(answer)
 
 
 """

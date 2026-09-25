@@ -23,12 +23,19 @@ class VectorStore:
             for i in range(len(chunks))
         ]
 
-        metadatas = [
-            {
-                "source": "company_policy.txt"
-            }
-            for _ in chunks
-        ]
+        metadatas = []
+
+        for chunk in chunks:
+            first_line = chunk.split("\n")[0]
+
+            section = first_line.rstrip(":")
+
+            metadatas.append(
+                {
+                    "source": "company_policy.txt",
+                    "section": section
+                }
+            )
 
         self.collection.upsert(
             ids=ids,
