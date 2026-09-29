@@ -57,9 +57,14 @@ else:
         context
     )
 
+source = retrieved_documents[0]["metadata"]["source"]
+section = retrieved_documents[0]["metadata"]["section"]
+
 print("\nFinal Answer:")
 print(answer)
 
+print(f"\nSource: {source}")
+print(f"Section: {section}")
 
 """
 # -------------------------
