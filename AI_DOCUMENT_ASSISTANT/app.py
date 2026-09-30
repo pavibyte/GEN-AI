@@ -30,15 +30,24 @@ vector_store.add_documents(
 # 2. RETRIEVAL
 # -------------------------
 
-question = "Can employees work remotely?"
+question = "What benefits do employees receive from the company?"
 
 retriever = Retriever()
 
 retrieved_documents = retriever.retrieve(
     question,
-    n_results=3,
-    distance_threshold=0.60
+    n_results=5,
+    distance_threshold=0.75
 )
+
+print("\nRetrieved Documents:")
+
+for result in retrieved_documents:
+    print("\n---")
+    print("Document:")
+    print(result["document"])
+    print("Distance:", result["distance"])
+    print("Metadata:", result["metadata"])
 
 print("\nQuestion:")
 print(question)
